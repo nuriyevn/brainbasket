@@ -1,14 +1,17 @@
 #include <stdio.h>
 #include <cs50.h>
 
-int main (void)
+int main(void)
 {
     int n;
     
-    do {
-        printf ("minutes: ");
+    // loop to get a positive number
+    do 
+    {
+        printf("minutes: ");
         n = GetInt ();
     } while (n <= 0);
     
-    printf ("bottles: %d\n", n*12);
+    // printing the result
+    printf("bottles: %d\n", n * 12);
 }
