@@ -1,6 +1,7 @@
-#include <stdio.h>
+#import <cs50.h>
+#import <stdio.h>
 
-int main()
+int main (void)
 {
-    printf("Hello, World\n");
+ printf("hello, world\n");
 }
