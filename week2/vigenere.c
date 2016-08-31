@@ -42,16 +42,16 @@ int main(int argc, string argv[])
         // enciphers upper case letters
         else if (isupper(text[i]))
         {
-            newKey = (key[(i - notAlpha) % keyLen] - 19) % ABC;
+            newKey = (key[(i - notAlpha) % keyLen] - 'a') % ABC;
             
-            printf("%c", (text[i] + newKey - 13) % ABC + 'A');
+            printf("%c", (text[i] + newKey - 'A') % ABC + 'A');
         }
         // enciphers lower case letters
         else if (islower(text[i]))
         {
-            newKey = (key[(i - notAlpha) % keyLen] - 19) % ABC;
+            newKey = (key[(i - notAlpha) % keyLen] - 'a') % ABC;
             
-            printf("%c", (text[i] + newKey - 19) % ABC + 'a');
+            printf("%c", (text[i] + newKey - 'a') % ABC + 'a');
         }
     }
     printf("\n");

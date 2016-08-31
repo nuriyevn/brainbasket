@@ -2,111 +2,138 @@
 #include <stdio.h>
 #include <math.h>
 
-int startDigit(long long card, int power);
-int countCardLen(long long card);
-int evenSum(long long card);
-int oddSumx2(long long card);
+#define VISA 4
+#define MC_FIRST 51 
+#define MC_LAST 55
+#define AMEX_ONE 34
+#define AMEX_TWO 37
+
+int countCardLen(long long userInput);
+bool lenInvalid();
+bool sumInvalid(int card[]);
+void cardType(int card[]);
+
+void longToArray(long long userInput, int card[]);
+
+int cardLen = 0;
 
 int main(void)
 {
-    // AmEx 34 or 37; MasterCard 51, 52, 53, 54, 55; Visa 4.
-    
-    // AmEx 15-digit, MasterCard 16-digit, Visa 13- and 16-digit.
-    
-    // Checksum % 10 = 0.
-    
+    // AmEx 15-digit; Visa 13- and 16-digit; MasterCard 16-digit.
+
     printf("Number: ");
     
-    long long cardNum = GetLongLong();
-
-    int cardLen = 0;
+    long long userInput = GetLongLong();
     
-    cardLen = countCardLen (cardNum);
+    cardLen = countCardLen (userInput);
     
-    int firstDigit = startDigit (cardNum, cardLen - 1);
-    int first2Digits = startDigit (cardNum, cardLen - 2);
-    
-    int checksum = evenSum (cardNum) + oddSumx2 (cardNum);
-    
-    if (!(checksum % 10) && (cardLen == 13 || cardLen == 15 || cardLen == 16))
+    if (lenInvalid())
     {
-        if (firstDigit == 4)
-        {
-            printf("VISA\n");
-        } 
-            else if ((first2Digits == 51) || (first2Digits == 52) || (first2Digits == 53) || (first2Digits == 54) || (first2Digits == 55))
-        {
-            printf("MASTERCARD\n");
-        }
-            else if ((first2Digits == 34) || (first2Digits == 37))
-        {
-            printf("AMEX\n");
-        } else 
-            printf("INVALID\n");
-
-    } else 
-        printf("INVALID\n");
-
+        return 0;
+    }
+    
+    int card[cardLen];
+    
+    longToArray(userInput, card);
+    
+    if (sumInvalid(card))
+    {
+        return 0;
+    }
+    
+    cardType(card);
 }
 
-// leaves only first digit(s) of card number
-int startDigit(long long card, int power)
-{
-    int xDigit = card / pow(10, power);
-    return xDigit;
-}
 
 // counts quantity of card's digits
-int countCardLen(long long card)
+int countCardLen(long long userInput)
 {
-    int cardLen = 0;
-    while(card != 0)
+    while(userInput)
     {
-        card /= 10;
+        userInput /= 10;
         cardLen++;
     }
     return cardLen;
 }
 
-// counts sum of card's even digits 
-int evenSum(long long card)
+// validates the card's length
+bool lenInvalid()
 {
-    int evenSum = 0;
-    int mod = 0;
-    
-    while(card > 0)
+    if (cardLen != 13 && cardLen != 15 && cardLen != 16)
     {
-        mod = card % 10; 
-        evenSum += mod;
-        card /= 100; 
-    }
-     
-    return evenSum;
+        printf("INVALID\n");
+        return true;
+    } 
+    return false;
 }
 
-// counts sum of card's odd*2 digits (in case of 12 or 16 after *2 it counts each digit separately 1+2 or 1+6)
-int oddSumx2(long long card)
+// Converts long long to array
+void longToArray(long long userInput, int card[])
 {
-    int oddSum = 0;
-    int mod = 0;
-    
-    card /= 10;
-    while (card > 0)
+    for (int i=cardLen - 1; i >= 0; i--)
     {
-        mod = (card % 10) * 2;
-        if (mod / 10 != 0)
+        card[i] = userInput % 10;
+        userInput /= 10;
+    }
+}
+
+// prints the card's type (visa/amex/MC)
+void cardType(int card[])
+{
+    int firstDigit = card[0];
+    int firstTwoDigits = firstDigit * 10 + card[1];
+    
+    if (firstDigit == VISA)
+    {
+        printf("VISA\n");
+    } 
+    else if ((firstTwoDigits >= MC_FIRST) && (firstTwoDigits <= MC_LAST))
+    {
+        printf("MASTERCARD\n");
+    }
+    else if ((firstTwoDigits == AMEX_ONE) || (firstTwoDigits == AMEX_TWO))
+    {
+        printf("AMEX\n");
+    }
+}
+
+// Validates the card's checksum
+bool sumInvalid(int card[])
+{
+    int sum = 0;
+    int tmp;
+    int oddCounter = 1;
+    
+    for (int i=cardLen - 1; i >= 0; i--)
+    {
+        if (oddCounter % 2 == 0)
         {
-            oddSum += (mod % 10) + (mod / 10);
-        } 
-        
-        else 
-        {    
-            oddSum += mod;
+            if (card[i] > 4)
+            {
+                tmp = 0;
+                tmp += card[i] * 2 - 9;
+                sum += tmp;
+            }
+            else
+            {
+                sum += card[i] * 2;
+            }
+        }
+        else
+        {
+            sum += card[i];
         }
         
-        card /= 100;
-        
+        oddCounter++;
     }
-     
-    return oddSum;
+    
+    if (sum % 10 != 0)
+    {
+        printf("INVALID\n");
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }

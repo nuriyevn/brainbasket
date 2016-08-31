@@ -28,12 +28,12 @@ int main(int argc, string argv[])
             // initial lower case text printed as lower case enciphered
             if (islower(text[j]))
             {
-                printf("%c", (text[j] + key - 19) % ABC + 'a' );
+                printf("%c", (text[j] + key - 'a') % ABC + 'a' );
             }
             // initial upper case text printed as upper case enciphered
             else if (isupper(text[j]))
             {
-                printf("%c", (text[j] + key - 13) % ABC + 'A' );
+                printf("%c", (text[j] + key - 'A') % ABC + 'A' );
             }
         }
         // prints non alphabetic characters unchanged
