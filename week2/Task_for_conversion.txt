@@ -1,0 +1,8 @@
+Improve binary program in order to work with any n-digit system , where (2 <= n <= 10).
+
+Input:
+provide number in 10-digit system
+provide k for digit system
+
+Output
+the result number.
