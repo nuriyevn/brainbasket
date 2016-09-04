@@ -26,7 +26,7 @@ int main()
 	ncount = count;
 
 	// Flagging bits
-	printf("count = %d", count);
+	
 	
 	while (count != 0)
 	{
