@@ -22,13 +22,13 @@ int main()
 		d = d * 2;
 		count++;
 	}
-	while (d*2 < n);
+	while (d*2 <= n);
 	ncount = count;
 
 	// Flagging bits
 	
 	
-	while (count != 0)
+	while (d != 0)
 	{
 		if (n / d > 0)
 		{
