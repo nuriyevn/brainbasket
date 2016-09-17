@@ -3,7 +3,7 @@
 
 int main(void)
 {
-    printf("input a decimal number: \n");
+    printf("enter a decimal number: \n");
     
     int n;
     
@@ -11,7 +11,7 @@ int main(void)
     
     int k;
     
-    printf("input a digit system: \n");
+    printf("enter a digit system number: \n");
     
     do
     {
@@ -29,6 +29,8 @@ int main(void)
     } while (d * k <= n);
     
     int bits[power];
+    
+    printf("the %d base number:\n", k);
     
     int i = 0;
         while (d != 0)
