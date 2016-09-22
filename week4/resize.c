@@ -98,32 +98,38 @@ int main(int argc, char* argv[])
     // iterate over infile's scanlines
     for (int i = 0, biHeight = abs(bi2.biHeight); i < biHeight; i++)
     {
-        // iterate over pixels in scanline
-        for (int j = 0; j < bi2.biWidth; j++)
+        for (int a = 0; a < resize; a++)
         {
-            // colored pixel
-            RGBTRIPLE triple;
-
-            // read RGB triple from infile
-            fread(&triple, sizeof(RGBTRIPLE), 1, inptr);
+            // TODO set file position indicator in inFile to the beginning of current row
+            // fseek(inptr, , SEEK_SET);
             
-            // iterate over pixel in outfile "resize"-times
-            for (int res = 0; res < resize; res++)
+            // iterate over pixels in scanline
+            for (int j = 0; j < bi2.biWidth; j++)
             {
-                // write RGB triple to outfile "resize"-times
-                fwrite(&triple, sizeof(RGBTRIPLE), 1, outptr);
+                // colored pixel
+                RGBTRIPLE triple;
+    
+                // read RGB triple from infile
+                fread(&triple, sizeof(RGBTRIPLE), 1, inptr);
+                
+                // iterate over pixel in outfile "resize"-times
+                for (int res = 0; res < resize; res++)
+                {
+                    // write RGB triple to outfile "resize"-times
+                    fwrite(&triple, sizeof(RGBTRIPLE), 1, outptr);
+                }
+                
+                // TODO vertical resize
             }
-            
-            // TODO vertical resize
-        }
-
-        // skip over padding, if any in initial image
-        fseek(inptr, paddingOld, SEEK_CUR);
-
-        // fill padding with zeroes in new image
-        for (int k = 0; k < padding; k++)
-        {
-            fputc(0x00, outptr);
+    
+            // skip over padding, if any in initial image
+            fseek(inptr, paddingOld, SEEK_CUR);
+    
+            // fill padding with zeroes in new image
+            for (int k = 0; k < padding; k++)
+            {
+                fputc(0x00, outptr);
+            }
         }
     }
 
