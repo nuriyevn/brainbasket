@@ -96,15 +96,15 @@ int main(int argc, char* argv[])
     int paddingOld =  (4 - (bi.biWidth * sizeof(RGBTRIPLE)) % 4) % 4;
 
     // iterate over infile's scanlines
-    for (int i = 0, biHeight = abs(bi2.biHeight); i < biHeight; i++)
+    for (int i = 0, biHeight = abs(bi.biHeight); i < biHeight; i++)
     {
         for (int a = 0; a < resize; a++)
         {
             // TODO set file position indicator in inFile to the beginning of current row
             // fseek(inptr, , SEEK_SET);
-            
+            fseek(inptr, i * (bi.biSizeImage / abs(bi.biHeight)) + bf.bfOffBits, SEEK_SET);
             // iterate over pixels in scanline
-            for (int j = 0; j < bi2.biWidth; j++)
+            for (int j = 0; j < bi.biWidth; j++)
             {
                 // colored pixel
                 RGBTRIPLE triple;
