@@ -84,14 +84,14 @@ int main(int argc, char* argv[])
             if (triple.rgbtRed==255)
             {
              
-                triple.rgbtGreen = 200;
-                triple.rgbtBlue = 200;
+                triple.rgbtGreen = 79;
+                triple.rgbtBlue = 79;
                 
             }
              else if (triple.rgbtRed <= 230 && triple.rgbtGreen == 255 && triple.rgbtBlue == 225)
             {
                 
-                triple.rgbtGreen = 120;
+                triple.rgbtGreen = 150;
                 triple.rgbtBlue = 120;
                 
                 
