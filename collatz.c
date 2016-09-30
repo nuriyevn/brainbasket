@@ -1,7 +1,11 @@
 #include <cs50.h>
 #include <stdio.h>
 
-int collazt (int n)
+int main (void)
+{
+   
+
+    int collazt (int n)
 {
   if (n == 1)
 {
@@ -9,13 +13,17 @@ int collazt (int n)
 }
  else if ((n %2) == 0)
      {
-     return 1 + collazt(n/2);
+     return  collazt(n/2);
      }
     else 
         {
-        return 1 + collazt(3*n+1) ;
+        return collazt(3*n+1) ;
         }
-     
+      printf("%d\n",n);
  }
     
+}
+
+
+
 
