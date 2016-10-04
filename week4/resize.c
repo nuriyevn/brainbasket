@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <string.h>
 
 #include "bmp.h"
 
@@ -73,7 +74,7 @@ int main(int argc, char* argv[])
     
     // create and resize metadata (BITMAPINFOHEADER) for new image
     BITMAPINFOHEADER bi2 = bi;
-    bi2.biHeight = bi2.biHeight * resize;
+    bi2.biHeight = bi2.biHeight * resize;// * resize;
     bi2.biWidth = bi2.biWidth * resize;  
     
     // determine padding for scanlines (new image)
@@ -94,37 +95,53 @@ int main(int argc, char* argv[])
     
     // determine padding for scanlines (old image)
     int paddingOld =  (4 - (bi.biWidth * sizeof(RGBTRIPLE)) % 4) % 4;
+    printf("paddingOld = %d;padding=%d", paddingOld, padding);
 
     // iterate over infile's scanlines
     for (int i = 0, biHeight = abs(bi2.biHeight); i < biHeight; i++)
     {
+        RGBTRIPLE triples[1000];
+        memset(triples, 0, 1000);
+        
+        int t = 0;
         // iterate over pixels in scanline
         for (int j = 0; j < bi2.biWidth; j++)
         {
-            // colored pixel
             RGBTRIPLE triple;
-
             // read RGB triple from infile
             fread(&triple, sizeof(RGBTRIPLE), 1, inptr);
             
-            // iterate over pixel in outfile "resize"-times
             for (int res = 0; res < resize; res++)
             {
                 // write RGB triple to outfile "resize"-times
                 fwrite(&triple, sizeof(RGBTRIPLE), 1, outptr);
+                triples[t++] = triple;
             }
-            
-            // TODO vertical resize
         }
-
-        // skip over padding, if any in initial image
+        
         fseek(inptr, paddingOld, SEEK_CUR);
-
-        // fill padding with zeroes in new image
+             // fill padding with zeroes in new image
         for (int k = 0; k < padding; k++)
         {
             fputc(0x00, outptr);
         }
+        
+        
+        for (int z = 0; z < resize - 1; z++)
+        {
+            for (int w = 0; w < bi2.biWidth * resize; w++)
+            {
+                //fputc(0x00, outptr);
+                
+                fwrite(&triples[w], sizeof(RGBTRIPLE), 1, outptr);
+            }
+            
+            for (int k = 0; k < padding; k++)
+            {
+                fputc(0x00, outptr);
+            }
+            
+        }    
     }
 
     // close infile
