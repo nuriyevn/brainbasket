@@ -37,10 +37,16 @@ int main(int argc, char* argv[])
     // read infile's BITMAPFILEHEADER
     BITMAPFILEHEADER bf;
     fread(&bf, sizeof(BITMAPFILEHEADER), 1, inptr);
-
+    
     // read infile's BITMAPINFOHEADER
     BITMAPINFOHEADER bi;
     fread(&bi, sizeof(BITMAPINFOHEADER), 1, inptr);
+    //determine new headers
+    BITMAPFILEHEADER bf2=bf;
+    BITMAPINFOHEADER bi2=bi;
+    bi2.biWidth = bi.biWidth * n ;
+    bi2.biHeight = bi.biHeight * n ; 
+    
     // ensure infile is (likely) a 24-bit uncompressed BMP 4.0
     if (bf.bfType != 0x4d42 || bf.bfOffBits != 54 || bi.biSize != 40 || 
         bi.biBitCount != 24 || bi.biCompression != 0)
@@ -50,22 +56,22 @@ int main(int argc, char* argv[])
         fprintf(stderr, "Unsupported file format.\n");
         return 4;
     }
-    for (int q = 0 ; q < n ; q ++ )
-    {
+    int ImageSize = (bi2.biWidth * sizeof(RGBTRIPLE)) * bi2.Height; 
+    bf2.bfSize = ImageSize + padding_outfile ;
     // write outfile's BITMAPFILEHEADER
-    fwrite(&bf,  sizeof(BITMAPFILEHEADER), 1, outptr);    
+    fwrite(&bf2,  sizeof(BITMAPFILEHEADER), 1, outptr);    
     // write outfile's BITMAPINFOHEADER
-    fwrite(&bi, sizeof(BITMAPINFOHEADER), 1, outptr);
+    fwrite(&bi2, sizeof(BITMAPINFOHEADER), 1, outptr);
     // determine padding for scanlines
     //determine new padding
-    }
+    
     int padding_infile = (4 - (bi.biWidth * sizeof(RGBTRIPLE)) % 4) % 4;
-     int padding_outfile = (4 - ( bi.biWidth * sizeof(RGBTRIPLE)) % 4) % 4;
+     int padding_outfile = (4 - ( bi2.biWidth * sizeof(RGBTRIPLE)) % 4) % 4;
     
     // iterate over infile's scanlines
     for (int i = 0, biHeight =  abs (bi.biHeight) ; i <  biHeight ; i++)
     {
-       for (int c = 0 ; c < n ; c++)
+    //   
        {
         // iterate over pixels in scanline
         for (int j = 0; j < bi.biWidth; j++)
@@ -91,7 +97,7 @@ int main(int argc, char* argv[])
         }
 
         // skip over padding, if any
-        fseek(inptr, padding_infile, SEEK_CUR);
+        fseek(inptr, padding_outfile, SEEK_CUR);
     }
 
     // close infile
