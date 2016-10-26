@@ -80,3 +80,19 @@ bool list_remove_last(list *head)
     return true;
 }
 
+int list_size(list* head)
+{
+    printf ("list_size is called");
+    list* tmp = head;
+    int count = 0;
+    printf ("%p\n",tmp);
+    while (tmp != NULL)
+    {
+        tmp = tmp->next;
+        count++;
+        printf("%i\n", count);
+        
+    }
+    return count ;
+    
+}

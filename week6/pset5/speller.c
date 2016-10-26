@@ -124,7 +124,7 @@ int main(int argc, char* argv[])
             // print word if misspelled
             if (misspelled)
             {
-                printf("%s\n", word);
+               // printf("%s\n", word);
                 misspellings++;
             }
 
@@ -153,6 +153,9 @@ int main(int argc, char* argv[])
     // calculate time to determine dictionary's size
     time_size = calculate(&before, &after);
 
+     size ();
+     print();
+    
     // unload dictionary
     getrusage(RUSAGE_SELF, &before);
     bool unloaded = unload();

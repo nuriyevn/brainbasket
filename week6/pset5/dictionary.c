@@ -33,8 +33,10 @@ bool load(const char* dictionary)
     // TODO
     FILE *fd = fopen(dictionary, "r");
     if (fd == NULL)
+    {
+        printf ("file is not valid");
         return false;
-        
+    }    
     char c = 0;
     int index = 0;
     char words[LENGTH];
@@ -50,8 +52,7 @@ bool load(const char* dictionary)
             words[index++] = c;
     }
     
-    list_print(head);
-    
+  
     fclose(fd);
     
     return true;
@@ -62,9 +63,9 @@ bool load(const char* dictionary)
  */
 unsigned int size(void)
 {
-    // TODO
-    
-    return 0;
+     int size = list_size(head);
+     printf("head=%p\n",head);
+    return size;
 }
 
 /**
@@ -74,4 +75,10 @@ bool unload(void)
 {
     while (list_remove_last(head));
     return true;
+}
+
+void print (void)
+{
+    list_print(head);
+    
 }

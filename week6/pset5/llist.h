@@ -15,3 +15,4 @@ typedef struct llist
 void list_add(list *head, string name);
 void list_print(list *head);
 bool list_remove_last(list *head);
+int list_size(list* head);
