@@ -1,38 +1,22 @@
 #include <stdio.h>
 #include <cs50.h>
-
-// struct linked list
-typedef struct llist
-{
-    int age;
-    string name;
-    struct llist* next;
-    
-} list;
+#include "llist.h"
 
 // declaration of global variable - head of llist
-list* head = NULL;
 
-// functions prototypes
-void list_add(int age, string name);
-void list_print();
-void list_remove_last();
-
+/*
 int main()
 {
-
     list_add(GetInt(), GetString());
-    
     list_print();
+    list_remove_last();
+    list_remove_last();
 
-    list_remove_last();
-    list_remove_last();
-    
     list_print();
 }
+*/
 
-
-void list_add(int age, string name)
+void list_add(list* head, int age, string name)
 {
     list* new_item = malloc(sizeof(list));
     new_item->next = NULL;
@@ -55,7 +39,7 @@ void list_add(int age, string name)
 }
 
 
-void list_print()
+void list_print(list *head)
 {
     list* tmp = head;
     
@@ -70,7 +54,7 @@ void list_print()
 }
 
 
-void list_remove_last()
+void list_remove_last(list *headgcc)
 {
     list* last = head;
     list* prev = last;
