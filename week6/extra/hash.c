@@ -41,11 +41,13 @@ hashtable* hashcreate (int size)
 
 void hashdestroy (hashtable* h)
 {
-    
+    hashtable* tmp ; 
+    //free h->table 
+    //free h
     
 }
 
-int hashresearch (hashtable* h , string key)
+int hash(hashtable* h , string key)
 {
     unsigned long int hashvalue ; 
     int i;
@@ -59,7 +61,52 @@ int hashresearch (hashtable* h , string key)
 }
 
 
+node* hashtableNewPair (string key, string value )
+{
+    node *new_node = malloc (sizeof(node));
+    new_node->key = key; 
+    new_node->value = value ;
+    new_node->next = NULL ;
+    return new_node; 
+    
+}
 
+void hashtableSet ( hashtable* h , string key, string value )
+{
+     
+    int index = hash(h , key); 
+    node *new_next; 
+    node *last; 
+    new_next = h->table[index];
+    //...
+    
+    if (new_next != NULL && new_next->key != NULL && new_next->key == key  )
+    {
+        new_next->value = value ;
+    }
+    
+    else 
+    {
+     node *new_pair = hashtableNewPair (key, value); 
+     h->table[index] = new_pair ;
+    }
+    
+    
+}
+
+string hashtableGet (hashtable *h , string key)
+{
+    
+   node *pair = h->table[hash(key)]; 
+    if ( pair == NULL || pair-> key == NULL )
+    {
+        return NULL ; 
+    }
+    else
+        return pair->value ;
+    
+    
+}
 
 int main ()
 {
